@@ -73,8 +73,8 @@ while(True):
         loss.backward()
         optimizer.step()
         
-        label = range_v*label + min_v
-        score = range_v*score + min_v
+        label = range_v*float(label) + min_v
+        score = range_v*float(score) + min_v
         
         rel_err += abs(float(label)-float(score)) / float(label)
     scheduler.step()
