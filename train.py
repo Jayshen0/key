@@ -23,6 +23,10 @@ df.iloc[:,8]=df.iloc[:,8].fillna(method='ffill')
 data = df.iloc[:,8].values
 data = data.reshape([-1,1])
 
+min_v = min(data)
+max_v = max(data)
+range_v = max_v - min_v
+
 from sklearn.preprocessing import MinMaxScaler
 sc = MinMaxScaler(feature_range = (0, 1))
 data_scaled = sc.fit_transform(data)
@@ -68,6 +72,9 @@ while(True):
         loss = criterion(score, label)
         loss.backward()
         optimizer.step()
+        
+        label = range_v*label + min_v
+        score = range_v*score + min_v
         
         rel_err += abs(float(label)-float(score)) / float(label)
     scheduler.step()
