@@ -8,7 +8,7 @@ import torch.nn as nn
 class lstm(nn.Module):
     def __init__(self, feature_size, hidden_size=3, num_layers=1):
      
-        super(model, self).__init__()
+        super(lstm, self).__init__()
         self.lstm = nn.LSTM(feature_size, hidden_size, num_layers, batch_first=True)
         self.linear = nn.Linear(hidden_size, 1)
         
