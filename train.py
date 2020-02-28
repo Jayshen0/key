@@ -8,6 +8,7 @@ Created on Thu Feb 27 15:05:22 2020
 
 import numpy as np
 import pandas as pd
+import torch.optim
 from torch.utils.data import DataLoader
 from get_loader import myDataset
 from model import lstm
@@ -46,29 +47,31 @@ model = lstm(train_x[0].shape[0])
 model = model.to(device)
 
 criterion = nn.MSELoss().to(device)
-optimizer = optim.Adam(model.parameters(), lr=3*1e-3)
+optimizer = optim.Adam(model.parameters(), lr=0.01)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 30, gamma=0.7, last_epoch=-1)
 
-
-train_loader = DataLoader(train, batch_size=2,num_workers=2,shuffle=False)
+train_loader = DataLoader(train, batch_size=1,num_workers=4,shuffle=False)
 
 epoch = 0
 prev = float('inf')
 while(True):
 
-    tot_loss = 0
+    rel_err = 0
     for idx, data in enumerate(train_loader):
+        optimizer.zero_grad()
         x, label = data
         x = x.float()
         x = x.to(device)
         label = label.to(device)
         score = model.forward(x)
+        score = score.view([1])
         loss = criterion(score, label)
-        optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        tot_loss += float(loss)
-    
-    print(epoch,tot_loss)
+        
+        rel_err += abs(float(label)-float(score)) / float(label)
+    scheduler.step()
+    print(epoch,1-rel_err/len(train_loader))
     
     
     if tot_loss > prev:
