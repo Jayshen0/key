@@ -45,7 +45,10 @@ model = lstm(train_x[0].shape[0])
 model = model.to(device)
 
 criterion = nn.MSELoss().to(device)
-optimizer = optim.Adam(fcn_model.parameters(), lr=3*1e-3)
+optimizer = optim.Adam(model.parameters(), lr=3*1e-3)
+
+
+train_loader = DataLoader(train, batch_size=2,num_workers=2,shuffle=False)
 
 epoch = 0
 prev = float('inf')
@@ -53,10 +56,10 @@ while(True):
 
     tot_loss = 0
     for idx, data in enumerate(train_loader):
-        img, target, label = data
-        img = img.to(device)
+        x, label = data
+        x = x.to(device)
         label = label.to(device)
-        score = fcn_model.forward(img)
+        score = model.forward(x)
         loss = criterion(score, label)
         optimizer.zero_grad()
         loss.backward()
@@ -72,6 +75,10 @@ while(True):
     prev_tot = tot_loss
     
 torch.save(model.state_dict(), '\best_model.pkl')
+
+
+
+
 
 
 
