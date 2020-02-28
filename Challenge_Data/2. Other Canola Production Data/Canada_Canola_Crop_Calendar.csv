@@ -1,0 +1,12 @@
+Item,Region,Start Date,End Date,Period
+Rapeseed,Alberta,2017-04-27,2017-06-04,Planting
+Rapeseed,Alberta,2017-06-05,2017-08-14,Growing
+Rapeseed,Alberta,2017-08-15,2017-10-12,Harvesting
+,,,,
+Rapeseed,Manitoba,2017-04-27,2017-06-04,Planting
+Rapeseed,Manitoba,2017-06-05,2017-08-14,Growing
+Rapeseed,Manitoba,2017-08-15,2017-10-12,Harvesting
+,,,,
+Rapeseed,Saskatchewan,2017-04-27,2017-06-04,Planting
+Rapeseed,Saskatchewan,2017-06-05,2017-08-14,Growing
+Rapeseed,Saskatchewan,2017-08-15,2017-10-12,Harvesting
