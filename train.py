@@ -8,6 +8,7 @@ Created on Thu Feb 27 15:05:22 2020
 
 import numpy as np
 import pandas as pd
+from torch.utils.data import DataLoader
 from get_loader import myDataset
 from model import lstm
 import torch.nn as nn
