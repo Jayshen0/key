@@ -9,7 +9,7 @@ from PIL import Image
 
 
 class myDataset(data.Dataset):
-    "
+   
     def __init__(self, x,y):
         """Set the path for images, captions and vocabulary wrapper.
         
@@ -25,10 +25,10 @@ class myDataset(data.Dataset):
 
     def __getitem__(self, index):
         
-        return x[index], y[index]
+        return self.x[index], self.y[index]
 
     def __len__(self):
-        return len(x)
+        return len(self.x)
 
 
     
