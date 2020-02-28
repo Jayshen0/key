@@ -81,10 +81,10 @@ while(True):
     print(epoch,1-rel_err/len(train_loader))
     
     
-    if tot_loss > prev:
+    if rel_err > prev:
         break
     
-    prev_tot = tot_loss
+    prev = rel_err
     
 torch.save(model.state_dict(), '\best_model.pkl')
 
