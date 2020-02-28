@@ -58,6 +58,7 @@ while(True):
     tot_loss = 0
     for idx, data in enumerate(train_loader):
         x, label = data
+        x = x.float()
         x = x.to(device)
         label = label.to(device)
         score = model.forward(x)
@@ -65,7 +66,7 @@ while(True):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        tot_loss += loss
+        tot_loss += float(loss)
     
     print(epoch,tot_loss)
     
