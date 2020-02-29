@@ -62,7 +62,7 @@ train_loader = DataLoader(train, batch_size=1,num_workers=4,shuffle=False)
 epoch = 0
 prev = float('inf')
 while(True):
-
+    epoch += 1
     rel_err = 0
     for idx, data in enumerate(train_loader):
         optimizer.zero_grad()
