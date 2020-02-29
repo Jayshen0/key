@@ -55,7 +55,7 @@ model = model.to(device)
 
 criterion = nn.MSELoss().to(device)
 optimizer = optim.Adam(model.parameters(), lr=0.01)
-scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 30, gamma=0.7, last_epoch=-1)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 5, gamma=0.7, last_epoch=-1)
 
 train_loader = DataLoader(train, batch_size=1,num_workers=4,shuffle=False)
 
