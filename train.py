@@ -96,7 +96,7 @@ sub = pd.read_csv('./Challenge_Data/to_be_filled.csv')
 
 last = None
 for i in range(sub.shape[0]):
-    if sub.iloc[i,1][5] == '1':
+    if sub.iloc[i,1][6] == '1':
         prev = []
         tmp = df[df['Region']==sub.iloc[i,0]]
         prev.append(tmp[tmp['Start Data']=='2018-10-1']['Value'])
