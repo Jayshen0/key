@@ -83,6 +83,7 @@ while(True):
         x, label = data
         x = x.float()
         x = x.to(device)
+        print(x.shape)
         label = label.to(device)
         score = model.forward(x)
         score = score.view([1])
