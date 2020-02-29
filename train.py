@@ -134,7 +134,7 @@ for i in range(sub.shape[0]):
         prev = prev[1:] + [last]
     
     print(prev)
-    last = model.forward(torch.Tensor(np.array(prev)).view([1,3]).to(device))
+    last = model.forward(torch.Tensor(prev).view([1,3]).to(device))
     last = float(last)
     sub.iloc[i,-1] = range_v*last + min_v
     
