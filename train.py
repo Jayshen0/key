@@ -123,9 +123,9 @@ for i in range(sub.shape[0]):
         
         prev = []
         tmp = df[df['Region']==sub.iloc[i,0]]
-        prev.append(tmp[tmp['Start Date']=='2018-10-01']['Value'][0])
-        prev.append(tmp[tmp['Start Date']=='2018-11-01']['Value'][0])
-        prev.append(tmp[tmp['Start Date']=='2018-12-01']['Value'][0])
+        prev.append(float(tmp[tmp['Start Date']=='2018-10-01']['Value']))
+        prev.append(float(tmp[tmp['Start Date']=='2018-11-01']['Value']))
+        prev.append(float(tmp[tmp['Start Date']=='2018-12-01']['Value']))
     else:
         prev = prev[1:] + [last]
     
