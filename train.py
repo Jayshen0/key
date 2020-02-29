@@ -61,6 +61,9 @@ train_loader = DataLoader(train, batch_size=1,num_workers=4,shuffle=False)
 
 epoch = 0
 prev = float('inf')
+
+#model.load_state_dict(torch.load('best_model.pkl'))
+
 while(True):
     epoch += 1
     rel_err = 0
@@ -89,7 +92,7 @@ while(True):
     
     prev = rel_err
     
-torch.save(model.state_dict(), '\best_model.pkl')
+torch.save(model.state_dict(), 'best_model.pkl')
 
 
 sub = pd.read_csv('./Challenge_Data/to_be_filled.csv')
@@ -104,7 +107,7 @@ for i in range(sub.shape[0]):
         prev.append(tmp[tmp['Start Date']=='2018-12-1']['Value'])
     else:
         prev = prev[1:] + [last]
-    last = model.forward(np.array(prev))
+    last = model.forward(torch.Tensor(np.array(prev)))
     last = float(last)
     sub.iloc[i,-1] = range_v*last + min_v
     
