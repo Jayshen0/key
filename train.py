@@ -39,6 +39,7 @@ train_x = []
 train_y = []
 
 pre_x = defaultdict(list)
+pre_y = []
 
 for i in range(3,df.shape[0]):
     if df.iloc[i-3,2] != df.iloc[i,2]:
@@ -49,12 +50,13 @@ for i in range(3,df.shape[0]):
     
     if df.iloc[i,6] > '2018':
         pre_x[df.iloc[i,2]].append(data_scaled[i,0])
+        pre_y.append(0)
 
 
 train = myDataset(train_x,train_y)
 pre_d = []
 for r in pre_x:
-    pre_d[r] =DataLoader(myDataset(pre_x[r]), batch_size=1,num_workers=4,shuffle=False) 
+    pre_d[r] =DataLoader(myDataset(pre_x[r],pre_y]), batch_size=1,num_workers=4,shuffle=False) 
 
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
