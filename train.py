@@ -129,6 +129,7 @@ for i in range(sub.shape[0]):
     else:
         prev = prev[1:] + [last]
     
+    print(prev)
     last = model.forward(torch.Tensor(np.array(prev)).view([1,3]).to_device())
     last = float(last)
     sub.iloc[i,-1] = range_v*last + min_v
