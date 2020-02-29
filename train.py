@@ -73,9 +73,9 @@ train_loader = DataLoader(train, batch_size=1,num_workers=4,shuffle=False)
 epoch = 0
 prev = float('inf')
 
-#model.load_state_dict(torch.load('best_model.pkl'))
+model.load_state_dict(torch.load('best_model.pkl'))
 
-while(True):
+while(False):
     epoch += 1
     rel_err = 0
     for idx, data in enumerate(train_loader):
@@ -117,6 +117,7 @@ for i in range(sub.shape[0]):
             x,label = data
             x = x.float()
             x = x.to(device)
+            x = x.view([1,3])
             _ = model.forward(x)
        
         
@@ -127,7 +128,8 @@ for i in range(sub.shape[0]):
         prev.append(tmp[tmp['Start Date']=='2018-12-1']['Value'])
     else:
         prev = prev[1:] + [last]
-    last = model.forward(torch.Tensor(np.array(prev)).view([1,3]))
+    
+    last = model.forward(torch.Tensor(np.array(prev)).view([1,3]).to_device())
     last = float(last)
     sub.iloc[i,-1] = range_v*last + min_v
     
