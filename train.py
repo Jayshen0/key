@@ -55,7 +55,7 @@ model = model.to(device)
 
 criterion = nn.MSELoss().to(device)
 optimizer = optim.Adam(model.parameters(), lr=0.01)
-scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 5, gamma=0.7, last_epoch=-1)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 3, gamma=0.7, last_epoch=-1)
 
 train_loader = DataLoader(train, batch_size=1,num_workers=4,shuffle=False)
 
@@ -99,9 +99,9 @@ for i in range(sub.shape[0]):
     if sub.iloc[i,1][6] == '1':
         prev = []
         tmp = df[df['Region']==sub.iloc[i,0]]
-        prev.append(tmp[tmp['Start Data']=='2018-10-1']['Value'])
-        prev.append(tmp[tmp['Start Data']=='2018-11-1']['Value'])
-        prev.append(tmp[tmp['Start Data']=='2018-12-1']['Value'])
+        prev.append(tmp[tmp['Start Date']=='2018-10-1']['Value'])
+        prev.append(tmp[tmp['Start Date']=='2018-11-1']['Value'])
+        prev.append(tmp[tmp['Start Date']=='2018-12-1']['Value'])
     else:
         prev = prev[1:] + [last]
     last = model.forward(np.array(prev))
