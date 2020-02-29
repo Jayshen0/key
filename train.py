@@ -31,6 +31,9 @@ from sklearn.preprocessing import MinMaxScaler
 sc = MinMaxScaler(feature_range = (0, 1))
 data_scaled = sc.fit_transform(data)
 
+#harv = pd.read_csv('./Challenge_Data/2. Other Canola Production Data/Canada_Canola_Harvested_Area.csv')
+#harv = harv[harv['Region'] == 'Alberta']
+
 train_x = []
 train_y = []
 
@@ -87,6 +90,26 @@ while(True):
     prev = rel_err
     
 torch.save(model.state_dict(), '\best_model.pkl')
+
+
+sub = pd.read_csv('./Challenge_Data/to_be_filled.csv')
+
+last = None
+for i in range(sub.shape[0]):
+    if sub.iloc[i,1][5] == '1':
+        prev = []
+        tmp = df[df['Region']==sub.iloc[i,0]]
+        prev.append(tmp[tmp['Start Data']=='2018-10-1']['Value'])
+        prev.append(tmp[tmp['Start Data']=='2018-11-1']['Value'])
+        prev.append(tmp[tmp['Start Data']=='2018-12-1']['Value'])
+    else:
+        prev = prev[1:] + [last]
+    last = model.forward(np.array(prev))
+    last = float(last)
+    sub.iloc[i,-1] = range_v*last + min_v
+    
+sub.to_csv('./solution.csv')
+
 
 
 
