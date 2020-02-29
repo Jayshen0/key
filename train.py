@@ -12,7 +12,7 @@ import torch.optim
 from torch.utils.data import DataLoader
 from get_loader import myDataset
 from model import lstm
-from collections import defualtdict
+from collections import defaultdict
 import torch.nn as nn
 import torch.optim as optim
 import torch
