@@ -83,7 +83,7 @@ while(True):
         x, label = data
         x = x.float()
         x = x.to(device)
-        print(x.shape)
+ 
         label = label.to(device)
         score = model.forward(x)
         score = score.view([1])
@@ -115,6 +115,8 @@ for i in range(sub.shape[0]):
         
         for idx, data in enumerate(pre_d[sub.iloc[i,0]]):
             x,label = data
+            x = x.float()
+            x = x.to(device)
             _ = model.forward(x)
        
         
