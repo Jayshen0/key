@@ -12,6 +12,7 @@ import torch.optim
 from torch.utils.data import DataLoader
 from get_loader import myDataset
 from model import lstm
+from collections import defualtdict
 import torch.nn as nn
 import torch.optim as optim
 import torch
@@ -37,15 +38,23 @@ data_scaled = sc.fit_transform(data)
 train_x = []
 train_y = []
 
+pre_x = defaultdict(list)
+
 for i in range(3,df.shape[0]):
     if df.iloc[i-3,2] != df.iloc[i,2]:
         continue
     
     train_x.append(data_scaled[i-3:i,0])
     train_y.append(data_scaled[i,0])
+    
+    if df.iloc[i,6] > '2018':
+        pre_x[df.iloc[i,2]].append(data_scaled[i,0])
 
 
 train = myDataset(train_x,train_y)
+pre_d = []
+for r in pre_x:
+    pre_d[r] =DataLoader(myDataset(pre_x[r]), batch_size=1,num_workers=4,shuffle=False) 
 
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -100,6 +109,12 @@ sub = pd.read_csv('./Challenge_Data/to_be_filled.csv')
 last = None
 for i in range(sub.shape[0]):
     if sub.iloc[i,1][6] == '1':
+        
+        for idx, data in enumerate(pre_d[sub.iloc[i,0]]):
+            x,label = data
+            _ = model.forward(x)
+       
+        
         prev = []
         tmp = df[df['Region']==sub.iloc[i,0]]
         prev.append(tmp[tmp['Start Date']=='2018-10-1']['Value'])
@@ -107,7 +122,7 @@ for i in range(sub.shape[0]):
         prev.append(tmp[tmp['Start Date']=='2018-12-1']['Value'])
     else:
         prev = prev[1:] + [last]
-    last = model.forward(torch.Tensor(np.array(prev)))
+    last = model.forward(torch.Tensor(np.array(prev)).view([1,3]))
     last = float(last)
     sub.iloc[i,-1] = range_v*last + min_v
     
