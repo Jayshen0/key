@@ -131,7 +131,7 @@ for i in range(sub.shape[0]):
         prev[2] = (prev[2]-min_v)/range_v
         
     else:
-        prev = prev[1:] + [last]
+        prev = prev[1:] + [np.array([last])]
     
     print(prev)
     last = model.forward(torch.Tensor(prev).view([1,3]).to(device))
