@@ -126,7 +126,10 @@ for i in range(sub.shape[0]):
         prev.append(float(tmp[tmp['Start Date']=='2018-10-01']['Value']))
         prev.append(float(tmp[tmp['Start Date']=='2018-11-01']['Value']))
         prev.append(float(tmp[tmp['Start Date']=='2018-12-01']['Value']))
-        prev = sc.fit_transform(prev)
+        prev[0] = (prev[0]-min_v)/range_v
+        prev[1] = (prev[1]-min_v)/range_v
+        prev[2] = (prev[2]-min_v)/range_v
+        
     else:
         prev = prev[1:] + [last]
     
