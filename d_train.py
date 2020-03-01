@@ -20,11 +20,22 @@ import torch
 m = 'Saskatchewan'
 df = pd.read_csv('./Challenge_Data/1. Target Variables/Canada_Canola_Producer_Deliveries.csv')
 
-df = df[df['Region']== m]
 df.iloc[:,8]=df.iloc[:,8].fillna(method='ffill')
 
-data = df.iloc[:,8].values
-data = data.reshape([-1,1])
+data = []
+
+for i in range(df.shape[0]):
+    if df.iloc[i,2] == 'Alberta' and df['Start Date'].iloc[i] >'2006':
+        data.append(df.iloc[i,8])
+    
+    if df.iloc[i,2] == 'Manitoba' and df['Start Data'].iloc[i] > '2007':
+        data.append(df.iloc[i,8])
+        
+    
+    if df.iloc[i,2] == m and df['Start Data'].iloc[i] > '2005':
+        data.append(df.iloc[i,8])
+        
+        
 
 min_v = min(data)
 max_v = max(data)
@@ -47,11 +58,11 @@ for i in range(3,df.shape[0]):
     if df.iloc[i-3,2] != df.iloc[i,2]:
         continue
     
-    train_x.append(data_scaled[i-3:i,0])
-    train_y.append(data_scaled[i,0])
+    train_x.append(data_scaled[i-3:i])
+    train_y.append(data_scaled[i])
     
     if df.iloc[i,6] > '2018':
-        pre_x[df.iloc[i,2]].append(data_scaled[i-3:i,0])
+        pre_x[df.iloc[i,2]].append(data_scaled[i-3:i])
         pre_y.append(0)
 
 
@@ -109,43 +120,8 @@ while(True):
     prev = tot_loss
    
 
-"""
-torch.save(model.state_dict(), 'best_model.pkl')
 
-
-
-print('*************')
-last = None
-for i in range(1,2):
-
-    for idx, data in enumerate(pre_d[m]):
-        x,label = data
-        x = x.float()
-        x = x.to(device)
-        x = x.view([1,3])
-        _ = model.forward(x)
-       
-        
-    prev = []
-    tmp = df
-        
-    
-    prev.append(float(tmp[tmp['Start Date']=='2018/1/1']['Value']))
-    prev.append(float(tmp[tmp['Start Date']=='2018/11/1']['Value']))
-    prev.append(float(tmp[tmp['Start Date']=='2018/12/1']['Value']))
-    prev[0] = (prev[0]-min_v)/range_v
-    prev[1] = (prev[1]-min_v)/range_v
-    prev[2] = (prev[2]-min_v)/range_v
-        
-    else:
-        prev = prev[1:] + [np.array([last])]
-    
-    last = model.forward(torch.Tensor(prev).view([1,3]).to(device))
-    last = float(last)
-    print(range_v*last + min_v)
-    
-"""
-
+torch.save(model.state_dict(), 'best_model_d.pkl')
 
 
 
