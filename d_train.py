@@ -41,9 +41,9 @@ min_v = min(data)
 max_v = max(data)
 range_v = max_v - min_v
 
-from sklearn.preprocessing import MinMaxScaler
-sc = MinMaxScaler(feature_range = (0, 1))
-data_scaled = sc.fit_transform(data)
+
+for i in range(len(data)):
+    data[i] = (data[i]-min_v) / range_v
 
 #harv = pd.read_csv('./Challenge_Data/2. Other Canola Production Data/Canada_Canola_Harvested_Area.csv')
 #harv = harv[harv['Region'] == 'Alberta']
