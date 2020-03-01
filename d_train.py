@@ -87,9 +87,9 @@ while(True):
     for idx, data in enumerate(train_loader):
         optimizer.zero_grad()
         x, label = data
-        
+        x = x.double()
         x = x.to(device)
-        print(x)
+
         label = label.to(device)
         score = model.forward(x)
         score = score.view([1])
@@ -146,7 +146,7 @@ for i in range(12):
     cur[2]=c
     cur[3+i] = 1
     last = model.forward(torch.Tensor(cur).view([1,15]).to(device))
-    last = float(last)
+    
     print(range_v*last + min_v)
     
 
