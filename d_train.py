@@ -87,11 +87,8 @@ while(True):
     for idx, data in enumerate(train_loader):
         optimizer.zero_grad()
         x, label = data
-
+        x = torch.DoubleTensor(x)
         x = x.to(device)
-        print(x)
-        x = x.double()
-        print(x)
 
         label = label.to(device)
         score = model.forward(x)
