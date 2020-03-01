@@ -88,7 +88,6 @@ while(True):
         optimizer.zero_grad()
         x, label = data
         x = torch.tensor(x,dtype=torch.float32)
-        print(x)
         x = x.to(device)
 
         label = label.to(device)
