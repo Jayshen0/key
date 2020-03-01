@@ -68,7 +68,7 @@ train = myDataset(train_x,train_y)
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-model = lstm(train_x[0].shape[0])
+model = lstm(1)
 model = model.to(device)
 
 criterion = nn.MSELoss().to(device)
