@@ -135,7 +135,7 @@ torch.save(model.state_dict(), 'best_model.pkl')
 
 sub = pd.read_csv('./Challenge_Data/to_be_filled.csv')
 
-last = None
+
 for i in range(sub.shape[0]):
     if sub.iloc[i,1][6] == '1':
         
@@ -144,14 +144,17 @@ for i in range(sub.shape[0]):
             x = x.float()
             x = x.to(device)
             x = x.view([1,3])
-            _ = model.forward(x)
+            score = model.forward(x)
+            loss = criterion(score, label)
+            loss.backward()
+            optimizer.step()
        
         
         prev = []
         tmp = df[df['Region']==sub.iloc[i,0]]
+        prev.append(float(tmp[tmp['Start Date']=='2018-10-01']['Value']))
         prev.append(float(tmp[tmp['Start Date']=='2018-11-01']['Value']))
         prev.append(float(tmp[tmp['Start Date']=='2018-12-01']['Value']))
-        prev.append(float(tmp[tmp['Start Date']=='2018-01-01']['Value']))
         prev[0] = (prev[0]-min_v)/range_v
         prev[1] = (prev[1]-min_v)/range_v
         prev[2] = (prev[2]-min_v)/range_v
@@ -167,6 +170,7 @@ for i in range(sub.shape[0]):
     sub.iloc[i,-1] = range_v*last + min_v
     
 sub.to_csv('./solution.csv')
+
 
 
 
