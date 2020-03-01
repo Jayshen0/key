@@ -50,7 +50,7 @@ for i in range(24,df.shape[0]):
     
     if month == 13:
         month = 1
-    cur = np.zeros([1,15],dtype=np.float32)
+    cur = np.zeros([1,15],dtype=np.double)
     cur[0][0] = data_scaled[i-1,0]
     cur[0][1] = data_scaled[i-2,0]
     cur[0][2] = data_scaled[i-3,0]
@@ -87,7 +87,7 @@ while(True):
     for idx, data in enumerate(train_loader):
         optimizer.zero_grad()
         x, label = data
-        x = torch.Tensor(x)
+        x = torch.from_numpy(x)
         x = x.double()
         print(x)
         x = x.to(device)
