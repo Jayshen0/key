@@ -17,10 +17,10 @@ import torch.nn as nn
 import torch.optim as optim
 import torch
 
-
+m = 'Saskatchewan'
 df = pd.read_csv('./Challenge_Data/1. Target Variables/Canada_Canola_Producer_Deliveries.csv')
 
-df = df[df['Region']=='Saskatchewan']
+df = df[df['Region']== m]
 df.iloc[:,8]=df.iloc[:,8].fillna(method='ffill')
 
 data = df.iloc[:,8].values
@@ -107,9 +107,10 @@ while(True):
         break
     
     prev = tot_loss
-    
-torch.save(model.state_dict(), 'best_model.pkl')
+   
 
+"""
+torch.save(model.state_dict(), 'best_model.pkl')
 
 
 
@@ -117,7 +118,7 @@ print('*************')
 last = None
 for i in range(1,2):
 
-    for idx, data in enumerate(pre_d['Saskatchewan']):
+    for idx, data in enumerate(pre_d[m]):
         x,label = data
         x = x.float()
         x = x.to(device)
@@ -125,15 +126,16 @@ for i in range(1,2):
         _ = model.forward(x)
        
         
-        prev = []
-        tmp = df
+    prev = []
+    tmp = df
         
-        prev.append(float(tmp[tmp['Start Date']=='2018/1/1']['Value']))
-        prev.append(float(tmp[tmp['Start Date']=='2018/11/1']['Value']))
-        prev.append(float(tmp[tmp['Start Date']=='2018/12/1']['Value']))
-        prev[0] = (prev[0]-min_v)/range_v
-        prev[1] = (prev[1]-min_v)/range_v
-        prev[2] = (prev[2]-min_v)/range_v
+    
+    prev.append(float(tmp[tmp['Start Date']=='2018/1/1']['Value']))
+    prev.append(float(tmp[tmp['Start Date']=='2018/11/1']['Value']))
+    prev.append(float(tmp[tmp['Start Date']=='2018/12/1']['Value']))
+    prev[0] = (prev[0]-min_v)/range_v
+    prev[1] = (prev[1]-min_v)/range_v
+    prev[2] = (prev[2]-min_v)/range_v
         
     else:
         prev = prev[1:] + [np.array([last])]
@@ -142,7 +144,7 @@ for i in range(1,2):
     last = float(last)
     print(range_v*last + min_v)
     
-
+"""
 
 
 

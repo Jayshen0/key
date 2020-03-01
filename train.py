@@ -66,7 +66,7 @@ model = model.to(device)
 
 criterion = nn.MSELoss().to(device)
 optimizer = optim.Adam(model.parameters(), lr=0.01)
-scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 3, gamma=0.7, last_epoch=-1)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 4, gamma=0.7, last_epoch=-1)
 
 train_loader = DataLoader(train, batch_size=1,num_workers=4,shuffle=False)
 
@@ -102,6 +102,10 @@ while(True):
     
     if tot_loss > prev:
         break
+    
+    if epoch == 30:
+        break
+        
     
     prev = tot_loss
     
