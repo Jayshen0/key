@@ -24,7 +24,6 @@ df.iloc[:,8]=df.iloc[:,8].fillna(method='ffill')
 df=df[df['Region'] == m]
 
 
-
 data = df.iloc[:,8].values
 data = data.reshape([-1,1])
 
@@ -42,33 +41,26 @@ data_scaled = sc.fit_transform(data)
 train_x = []
 train_y = []
 
-test_x = []
-test_y = []
 
-pre_x = defaultdict(list)
-pre_y = []
 
-for i in range(3,df.shape[0]):
-    if df.iloc[i-3,2] != df.iloc[i,2]:
-        continue
+month = 0
+for i in range(24,df.shape[0]):
     
-    if df.iloc[i,6] < '2018':
-        train_x.append(data_scaled[i-3:i,0])
-        train_y.append(data_scaled[i,0])
-    else:
-        test_x.append(data_scaled[i-3:i,0])
-        test_y.append(data_scaled[i,0])
+    month += 1
+    cur = [0 for i in range(15)]
+    cur[0] = df.iloc[i-1,-1]
+    cur[1] = df.iloc[i-2,-1]
+    cur[2] = df.iloc[i-3,-1]
+    cur[month+2] = 1
+    train_x.append(cur)
+    train_y.append(df.iloc[i,-1])
     
-    if df.iloc[i,6] > '2018':
-        pre_x[df.iloc[i,2]].append(data_scaled[i-3:i,0])
-        pre_y.append(data_scaled[i,0])
+    
+    
+    
 
 
 train = myDataset(train_x,train_y)
-test = myDataset(test_x,test_y)
-pre_d = dict()
-for r in pre_x:
-    pre_d[r] =DataLoader(myDataset(pre_x[r],pre_y), batch_size=1,num_workers=4,shuffle=False) 
 
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -84,8 +76,6 @@ train_loader = DataLoader(train, batch_size=1,num_workers=4,shuffle=False)
 
 epoch = 0
 prev = float('inf')
-
-#model.load_state_dict(torch.load('best_model.pkl'))
 
 while(True):
     epoch += 1
@@ -134,44 +124,26 @@ while(True):
     
     prev = tot_loss
     
-#torch.save(model.state_dict(), 'best_model.pkl')
+
 
 
 sub = pd.read_csv('./Challenge_Data/to_be_filled.csv')
 
 
+
+a = float(df[df['Start Date']=='2018-12-01']['Value'])
+b = float(df[df['Start Date']=='2018-11-01']['Value'])
+c = float(df[df['Start Date']=='2018-10-01']['Value'])
+
 for i in range(12):
-    if i == 0:
-        
-        for idx, data in enumerate(pre_d[m]):
-            optimizer.zero_grad()
-            x,label = data
-            label = label.float()
-            label = label.to(device)
-            x = x.float()
-            x = x.to(device)
-            x = x.view([1,3])
-            score = model.forward(x)
-            loss = criterion(score, label)
-            loss.backward()
-            optimizer.step()
+
        
-        
-        prev = []
-        prev.append(float(df[df['Start Date']=='2018-10-01']['Value']))
-        prev.append(float(df[df['Start Date']=='2018-11-01']['Value']))
-        prev.append(float(df[df['Start Date']=='2018-12-01']['Value']))
-        prev[0] = (prev[0]-min_v)/range_v
-        prev[1] = (prev[1]-min_v)/range_v
-        prev[2] = (prev[2]-min_v)/range_v
-        
- 
-        
-    else:
-        prev = prev[1:] + [np.array([last])]
-    
-    print(prev)
-    last = model.forward(torch.Tensor(prev).view([1,3]).to(device))
+    cur = np.zeros([1,15])
+    cur[0]=a
+    cur[1]=b
+    cur[2]=c
+    cur[3+i] = 1
+    last = model.forward(torch.Tensor(cur).view([1,15]).to(device))
     last = float(last)
     print(range_v*last + min_v)
     
