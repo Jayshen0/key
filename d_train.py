@@ -24,6 +24,7 @@ df.iloc[:,8]=df.iloc[:,8].fillna(method='ffill')
 df=df[df['Region'] == m]
 
 
+
 data = df.iloc[:,8].values
 data = data.reshape([-1,1])
 
@@ -84,9 +85,9 @@ train_loader = DataLoader(train, batch_size=1,num_workers=4,shuffle=False)
 epoch = 0
 prev = float('inf')
 
-model.load_state_dict(torch.load('best_model.pkl'))
+#model.load_state_dict(torch.load('best_model.pkl'))
 
-while(False):
+while(True):
     epoch += 1
     tot_loss = 0
     rel_err = 0
