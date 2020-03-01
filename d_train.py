@@ -55,7 +55,7 @@ for i in range(24,df.shape[0]):
     cur[1] = df.iloc[i-2,-1]
     cur[2] = df.iloc[i-3,-1]
     cur[month+2] = 1
-    train_x.append(cur)
+    train_x.append(np.array(cur))
     train_y.append(df.iloc[i,-1])
     
     
@@ -87,7 +87,7 @@ while(True):
     for idx, data in enumerate(train_loader):
         optimizer.zero_grad()
         x, label = data
-        x = x.float()
+     
         x = x.to(device)
  
         label = label.to(device)
