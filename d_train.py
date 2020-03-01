@@ -89,7 +89,9 @@ while(True):
         x, label = data
 
         x = x.to(device)
+        print(x)
         x = x.double()
+        print(x)
 
         label = label.to(device)
         score = model.forward(x)
