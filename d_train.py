@@ -22,7 +22,7 @@ d['British Columbia'] = [1 for i in range(11)]
 for region in ['Alberta','Manitoba','Ontario','Québec','Saskatchewan']:
     cur = df[df['Region']==region]
     now = [0 for i in range(11)]
-    for i in range(2011,2020):
+    for i in range(2016,2020):
         tmp = cur[cur['Start Date'] < str(i)]
         cur = cur[cur['Start Date'] > str(i)]
         tmp = list(tmp['Value'].values)
@@ -32,7 +32,7 @@ for region in ['Alberta','Manitoba','Ontario','Québec','Saskatchewan']:
             now[j] += tmp[j+1] / tmp[j]
     
     for k in range(11):
-        now[k] /= 9
+        now[k] /= 4
     
     d[region] = now
             
