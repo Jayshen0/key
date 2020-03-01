@@ -120,6 +120,7 @@ while(True):
         loss = criterion(score, label)
         tot_loss += float(loss)
     
+    print(tot_loss)
     if tot_loss > prev:
         break
     
