@@ -57,7 +57,7 @@ for r in d:
 
     
     
-sub.to_csv('./solution.csv')len()
+sub.to_csv('./solution.csv')
 
 
 
