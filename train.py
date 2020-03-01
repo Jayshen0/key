@@ -163,7 +163,7 @@ for i in range(sub.shape[0]):
         prev[2] = (prev[2]-min_v)/range_v
         
         sub.iloc[i,-1] = prev[2]
-        continue
+ 
         
     else:
         print(sub.iloc[i,1])
