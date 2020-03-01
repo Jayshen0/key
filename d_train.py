@@ -18,9 +18,10 @@ import torch.optim as optim
 import torch
 
 
+m = 'Alberta'
 df = pd.read_csv('./Challenge_Data/1. Target Variables/Canada_Canola_Producer_Deliveries.csv')
 df.iloc[:,8]=df.iloc[:,8].fillna(method='ffill')
-df=df[df['Region'] == 'Alberta']
+df=df[df['Region'] == m]
 
 
 data = df.iloc[:,8].values
@@ -138,10 +139,10 @@ while(False):
 sub = pd.read_csv('./Challenge_Data/to_be_filled.csv')
 
 
-for i in range(sub.shape[0]):
-    if sub.iloc[i,1][6] == '1':
+for i in range(12):
+    if i == 0:
         
-        for idx, data in enumerate(pre_d[sub.iloc[i,0]]):
+        for idx, data in enumerate(pre_d[m]):
             optimizer.zero_grad()
             x,label = data
             label = label.float()
@@ -156,10 +157,9 @@ for i in range(sub.shape[0]):
        
         
         prev = []
-        tmp = df[df['Region']==sub.iloc[i,0]]
-        prev.append(float(tmp[tmp['Start Date']=='2018-10-01']['Value']))
-        prev.append(float(tmp[tmp['Start Date']=='2018-11-01']['Value']))
-        prev.append(float(tmp[tmp['Start Date']=='2018-12-01']['Value']))
+        prev.append(float(df[df['Start Date']=='2018-10-01']['Value']))
+        prev.append(float(df[df['Start Date']=='2018-11-01']['Value']))
+        prev.append(float(df[df['Start Date']=='2018-12-01']['Value']))
         prev[0] = (prev[0]-min_v)/range_v
         prev[1] = (prev[1]-min_v)/range_v
         prev[2] = (prev[2]-min_v)/range_v
