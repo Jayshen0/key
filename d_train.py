@@ -50,12 +50,12 @@ for i in range(24,df.shape[0]):
     
     if month == 13:
         month = 1
-    cur = [0.0 for i in range(15)]
-    cur[0] = df.iloc[i-1,-1]
-    cur[1] = df.iloc[i-2,-1]
-    cur[2] = df.iloc[i-3,-1]
-    cur[month+2] = 1
-    train_x.append(np.array(cur))
+    cur = np.array([1,15],dtype=np.float64)
+    cur[0][0] = df.iloc[i-1,-1]
+    cur[0][1] = df.iloc[i-2,-1]
+    cur[0][2] = df.iloc[i-3,-1]
+    cur[0][month+2] = 1
+    train_x.append(cur)
     train_y.append(df.iloc[i,-1])
     
     
@@ -89,7 +89,6 @@ while(True):
         x, label = data
         
         x = torch.Tensor(x)
-        x = x.float()
      
         x = x.to(device)
  
