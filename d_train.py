@@ -87,6 +87,9 @@ while(True):
     for idx, data in enumerate(train_loader):
         optimizer.zero_grad()
         x, label = data
+        
+        x = torch.Tensor(x)
+        x = x.float()
      
         x = x.to(device)
  
