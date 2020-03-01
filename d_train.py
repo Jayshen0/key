@@ -88,6 +88,7 @@ while(True):
         optimizer.zero_grad()
         x, label = data
         x = torch.DoubleTensor(x)
+        print(x)
         x = x.to(device)
 
         label = label.to(device)
