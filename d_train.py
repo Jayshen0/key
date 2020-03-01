@@ -61,7 +61,7 @@ for r in ['Alberta','British Columbia', 'Manitoba', 'Ontario','Québec','Saskatc
 
     
     
-#sub.to_csv('./solution.csv')
+sub.to_csv('./solution.csv')
 
 
 
