@@ -61,7 +61,7 @@ for i in range(3,df.shape[0]):
 
 
 train = myDataset(train_x,train_y)
-test = mydataset(test_x,test_y)
+test = myDataset(test_x,test_y)
 pre_d = dict()
 for r in pre_x:
     pre_d[r] =DataLoader(myDataset(pre_x[r],pre_y), batch_size=1,num_workers=4,shuffle=False) 
