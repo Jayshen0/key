@@ -47,6 +47,9 @@ month = 0
 for i in range(24,df.shape[0]):
     
     month += 1
+    
+    if month == 13:
+        month = 1
     cur = [0 for i in range(15)]
     cur[0] = df.iloc[i-1,-1]
     cur[1] = df.iloc[i-2,-1]
