@@ -74,7 +74,7 @@ train_loader = DataLoader(train, batch_size=1,num_workers=4,shuffle=False)
 
 epoch = 0
 prev = float('inf')
-
+tot_loss = 0
 
 
 while(True):
@@ -90,6 +90,8 @@ while(True):
         score = model.forward(x)
         score = score.view([1])
         loss = criterion(score, label)
+        
+        tot_loss += float(loss)
         loss.backward()
         optimizer.step()
         
@@ -98,13 +100,13 @@ while(True):
         
         rel_err += abs(float(label)-float(score)) / float(label)
     scheduler.step()
-    print(epoch,1-rel_err/len(train_loader))
+    print(epoch,max(0,1-rel_err/len(train_loader)))
     
     
-    if rel_err > prev:
+    if tot_loss > prev:
         break
     
-    prev = rel_err
+    prev = tot_loss
     
 torch.save(model.state_dict(), 'best_model.pkl')
 
@@ -113,19 +115,18 @@ torch.save(model.state_dict(), 'best_model.pkl')
 
 print('*************')
 last = None
-for i in range(sub.shape[0]):
-    if sub.iloc[i,1][6] == '1':
-        
-        for idx, data in enumerate(pre_d[sub.iloc[i,0]]):
-            x,label = data
-            x = x.float()
-            x = x.to(device)
-            x = x.view([1,3])
-            _ = model.forward(x)
+for i in range(1,2):
+
+    for idx, data in enumerate(pre_d['Saskatchewan']):
+        x,label = data
+        x = x.float()
+        x = x.to(device)
+        x = x.view([1,3])
+        _ = model.forward(x)
        
         
         prev = []
-        tmp = df[df['Region']==sub.iloc[i,0]]
+        tmp = df
         prev.append(float(tmp[tmp['Start Date']=='2018-10-01']['Value']))
         prev.append(float(tmp[tmp['Start Date']=='2018-11-01']['Value']))
         prev.append(float(tmp[tmp['Start Date']=='2018-12-01']['Value']))
