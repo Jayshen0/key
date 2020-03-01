@@ -141,6 +141,7 @@ for i in range(sub.shape[0]):
         
         for idx, data in enumerate(pre_d[sub.iloc[i,0]]):
             x,label = data
+            label = label.to(device)
             x = x.float()
             x = x.to(device)
             x = x.view([1,3])
@@ -165,6 +166,7 @@ for i in range(sub.shape[0]):
     else:
         prev = prev[1:] + [np.array([last])]
     
+    print(prev)
     last = model.forward(torch.Tensor(prev).view([1,3]).to(device))
     last = float(last)
     sub.iloc[i,-1] = range_v*last + min_v
