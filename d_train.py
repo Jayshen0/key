@@ -51,12 +51,12 @@ for i in range(24,df.shape[0]):
     if month == 13:
         month = 1
     cur = np.zeros([1,15],dtype=np.float32)
-    cur[0][0] = df.iloc[i-1,-1]
-    cur[0][1] = df.iloc[i-2,-1]
-    cur[0][2] = df.iloc[i-3,-1]
+    cur[0][0] = data_scaled[i-1,0]
+    cur[0][1] = data_scaled[i-2,0]
+    cur[0][2] = data_scaled[i-3,0]
     cur[0][month+2] = 1
     train_x.append(cur)
-    train_y.append(df.iloc[i,-1])
+    train_y.append(data_scaled[i,0]])
     
     
     
