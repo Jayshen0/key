@@ -28,11 +28,11 @@ for i in range(df.shape[0]):
     if df.iloc[i,2] == 'Alberta' and df['Start Date'].iloc[i] >'2006':
         data.append(df.iloc[i,8])
     
-    if df.iloc[i,2] == 'Manitoba' and df['Start Data'].iloc[i] > '2007':
+    if df.iloc[i,2] == 'Manitoba' and df['Start Date'].iloc[i] > '2007':
         data.append(df.iloc[i,8])
         
     
-    if df.iloc[i,2] == m and df['Start Data'].iloc[i] > '2005':
+    if df.iloc[i,2] == m and df['Start Date'].iloc[i] > '2005':
         data.append(df.iloc[i,8])
         
         
