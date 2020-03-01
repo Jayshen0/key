@@ -81,9 +81,9 @@ train_loader = DataLoader(train, batch_size=1,num_workers=4,shuffle=False)
 epoch = 0
 prev = float('inf')
 
-#model.load_state_dict(torch.load('best_model.pkl'))
+model.load_state_dict(torch.load('best_model.pkl'))
 
-while(True):
+while(False):
     epoch += 1
     tot_loss = 0
     rel_err = 0
@@ -130,7 +130,7 @@ while(True):
     
     prev = tot_loss
     
-torch.save(model.state_dict(), 'best_model.pkl')
+#torch.save(model.state_dict(), 'best_model.pkl')
 
 
 sub = pd.read_csv('./Challenge_Data/to_be_filled.csv')
@@ -140,7 +140,9 @@ for i in range(sub.shape[0]):
     if sub.iloc[i,1][6] == '1':
         
         for idx, data in enumerate(pre_d[sub.iloc[i,0]]):
+            optimizer.zero_grad()
             x,label = data
+            label = label.float()
             label = label.to(device)
             x = x.float()
             x = x.to(device)
