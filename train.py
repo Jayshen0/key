@@ -166,6 +166,7 @@ for i in range(sub.shape[0]):
         continue
         
     else:
+        print(sub.iloc[i,1])
         prev = prev[1:] + [np.array([last])]
     
     print(prev)
