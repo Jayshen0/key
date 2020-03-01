@@ -73,10 +73,11 @@ train_loader = DataLoader(train, batch_size=1,num_workers=4,shuffle=False)
 epoch = 0
 prev = float('inf')
 
-model.load_state_dict(torch.load('best_model.pkl'))
+#model.load_state_dict(torch.load('best_model.pkl'))
 
-while(False):
+while(True):
     epoch += 1
+    tot_loss = 0
     rel_err = 0
     for idx, data in enumerate(train_loader):
         optimizer.zero_grad()
@@ -94,15 +95,15 @@ while(False):
         label = range_v*float(label) + min_v
         score = range_v*float(score) + min_v
         
-        rel_err += abs(float(label)-float(score)) / float(label)
+        rel_err += max(0,1-abs(float(label)-float(score)) / float(label))
     scheduler.step()
-    print(epoch,1-rel_err/len(train_loader))
+    print(epoch,rel_err/len(train_loader))
     
     
-    if rel_err > prev:
+    if tot_loss > prev:
         break
     
-    prev = rel_err
+    prev = tot_loss
     
 torch.save(model.state_dict(), 'best_model.pkl')
 

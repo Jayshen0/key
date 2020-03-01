@@ -98,9 +98,9 @@ while(True):
         label = range_v*float(label) + min_v
         score = range_v*float(score) + min_v
         
-        rel_err += abs(float(label)-float(score)) / float(label)
+        rel_err += max(0,1-abs(float(label)-float(score)) / float(label))
     scheduler.step()
-    print(epoch,max(0,1-rel_err/len(train_loader)))
+    print(epoch,rel_err/len(train_loader))
     
     
     if tot_loss > prev:
@@ -127,9 +127,10 @@ for i in range(1,2):
         
         prev = []
         tmp = df
-        prev.append(float(tmp[tmp['Start Date']=='2018-10-01']['Value']))
-        prev.append(float(tmp[tmp['Start Date']=='2018-11-01']['Value']))
-        prev.append(float(tmp[tmp['Start Date']=='2018-12-01']['Value']))
+        
+        prev.append(float(tmp[tmp['Start Date']=='2018/1/1']['Value']))
+        prev.append(float(tmp[tmp['Start Date']=='2018/11/1']['Value']))
+        prev.append(float(tmp[tmp['Start Date']=='2018/12/1']['Value']))
         prev[0] = (prev[0]-min_v)/range_v
         prev[1] = (prev[1]-min_v)/range_v
         prev[2] = (prev[2]-min_v)/range_v
