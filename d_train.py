@@ -56,7 +56,7 @@ for i in range(24,df.shape[0]):
     cur[0][2] = data_scaled[i-3,0]
     cur[0][month+2] = 1
     train_x.append(cur)
-    train_y.append(data_scaled[i,0]])
+    train_y.append(data_scaled[i,0])
     
     
     
