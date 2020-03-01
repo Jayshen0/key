@@ -88,6 +88,7 @@ while(True):
         optimizer.zero_grad()
         x, label = data
         x = x.double()
+        print(x)
         x = x.to(device)
 
         label = label.to(device)
