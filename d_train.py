@@ -22,13 +22,14 @@ d['British Columbia'] = [1 for i in range(11)]
 for region in ['Alberta','Manitoba','Ontario','Québec','Saskatchewan']:
     cur = df[df['Region']==region]
     now = [0 for i in range(11)]
-    for i in range(20010,2019):
+    for i in range(2011,2020):
         tmp = cur[cur['Start Date'] < str(i)]
         cur = cur[cur['Start Date'] > str(i)]
-        tmp = list(tmp.values)
-    
+        tmp = list(tmp['Value'].values)
+        
+
         for j in range(11):
-            now[j] += tmp[j+1][-1] / tmp[j][-1]
+            now[j] += tmp[j+1] / tmp[j]
     
     for k in range(11):
         now[k] /= 9
@@ -42,14 +43,17 @@ for region in ['Alberta','Manitoba','Ontario','Québec','Saskatchewan']:
 sub = pd.read_csv('./solution.csv')
 
 i = 0
-for r in d:
-    print(r)
-    cur = df[df['Region']==region]
+for r in ['Alberta','British Columbia', 'Manitoba', 'Ontario','Québec','Saskatchewan']:
+    cur = df[df['Region']==r]
     
-    sub.iloc[i*12][-2] = (float(cur[cur['Start Date']=='2018/1/1']['Value'])+float(cur[cur['Start Date']=='2017/1/1']['Value']))/2
-    
+    sub.iloc[i*12,-2] = (float(cur[cur['Start Date']=='2018/1/1']['Value'])+float(cur[cur['Start Date']=='2017/1/1']['Value']))/2   
     for j in range(1,12):
-        sub.iloc[i*12+i,-2] = sub.iloc[i*12+i-1,-2] * d[r][j-1]
+        sub.iloc[i*12+j,-2] = sub.iloc[i*12+j-1,-2] * d[r][j-1]
+    
+    i += 1
+    
+
+
         
         
         
@@ -57,7 +61,7 @@ for r in d:
 
     
     
-sub.to_csv('./solution.csv')
+#sub.to_csv('./solution.csv')
 
 
 
