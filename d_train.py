@@ -22,19 +22,18 @@ df = pd.read_csv('./Challenge_Data/1. Target Variables/Canada_Canola_Producer_De
 
 df.iloc[:,8]=df.iloc[:,8].fillna(method='ffill')
 
-data = []
+
 
 for i in range(df.shape[0]):
     if df.iloc[i,2] == 'Alberta' and df['Start Date'].iloc[i] >'2006':
-        data.append(df.iloc[i,8])
+        df.ioc[i,-2] = '0'
     
     if df.iloc[i,2] == 'Manitoba' and df['Start Date'].iloc[i] > '2007':
-        data.append(df.iloc[i,8])
+        df.ioc[i,-2] = '0'
         
     
     if df.iloc[i,2] == m and df['Start Date'].iloc[i] > '2005':
-        data.append(df.iloc[i,8])
-        
+        df.ioc[i,-2] = '0'        
         
 
 min_v = min(data)
@@ -54,15 +53,15 @@ train_y = []
 pre_x = defaultdict(list)
 pre_y = []
 
-for i in range(3,df.shape[0]):
+for i in range(len(data)):
     if df.iloc[i-3,2] != df.iloc[i,2]:
         continue
     
-    train_x.append(data_scaled[i-3:i])
-    train_y.append(data_scaled[i])
+    train_x.append(data[i-3:i])
+    train_y.append(data[i])
     
     if df.iloc[i,6] > '2018':
-        pre_x[df.iloc[i,2]].append(data_scaled[i-3:i])
+        pre_x[df.iloc[i,2]].append(data[i-3:i])
         pre_y.append(0)
 
 

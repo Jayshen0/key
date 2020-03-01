@@ -38,6 +38,9 @@ data_scaled = sc.fit_transform(data)
 train_x = []
 train_y = []
 
+test_x = []
+test_y = []
+
 pre_x = defaultdict(list)
 pre_y = []
 
@@ -45,8 +48,12 @@ for i in range(3,df.shape[0]):
     if df.iloc[i-3,2] != df.iloc[i,2]:
         continue
     
-    train_x.append(data_scaled[i-3:i,0])
-    train_y.append(data_scaled[i,0])
+    if df.iloc[i,6] < '2018':
+        train_x.append(data_scaled[i-3:i,0])
+        train_y.append(data_scaled[i,0])
+    else:
+        test_x.append(data_scaled[i-3:i,0])
+        test_y.append(data_scaled[i,0])
     
     if df.iloc[i,6] > '2018':
         pre_x[df.iloc[i,2]].append(data_scaled[i-3:i,0])
@@ -54,6 +61,7 @@ for i in range(3,df.shape[0]):
 
 
 train = myDataset(train_x,train_y)
+test = mydataset(test_x,test_y)
 pre_d = dict()
 for r in pre_x:
     pre_d[r] =DataLoader(myDataset(pre_x[r],pre_y), batch_size=1,num_workers=4,shuffle=False) 
@@ -100,6 +108,18 @@ while(True):
     print(epoch,rel_err/len(train_loader))
     
     
+    for idx, data in enumerate(train_loader):
+        optimizer.zero_grad()
+        x, label = data
+        x = x.float()
+        x = x.to(device)
+ 
+        label = label.to(device)
+        score = model.forward(x)
+        score = score.view([1])
+        loss = criterion(score, label)
+        tot_loss += float(loss)
+    
     if tot_loss > prev:
         break
     
@@ -128,17 +148,19 @@ for i in range(sub.shape[0]):
         
         prev = []
         tmp = df[df['Region']==sub.iloc[i,0]]
-        prev.append(float(tmp[tmp['Start Date']=='2018-10-01']['Value']))
         prev.append(float(tmp[tmp['Start Date']=='2018-11-01']['Value']))
         prev.append(float(tmp[tmp['Start Date']=='2018-12-01']['Value']))
+        prev.append(float(tmp[tmp['Start Date']=='2018-01-01']['Value']))
         prev[0] = (prev[0]-min_v)/range_v
         prev[1] = (prev[1]-min_v)/range_v
         prev[2] = (prev[2]-min_v)/range_v
         
+        sub.iloc[i,-1] = prev[2]
+        continue
+        
     else:
         prev = prev[1:] + [np.array([last])]
     
-    print(prev)
     last = model.forward(torch.Tensor(prev).view([1,3]).to(device))
     last = float(last)
     sub.iloc[i,-1] = range_v*last + min_v
