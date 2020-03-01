@@ -89,7 +89,7 @@ while(True):
         x, label = data
         
         x = x.to(device)
- 
+        print(x)
         label = label.to(device)
         score = model.forward(x)
         score = score.view([1])
