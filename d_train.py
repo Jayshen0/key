@@ -50,7 +50,7 @@ for i in range(24,df.shape[0]):
     
     if month == 13:
         month = 1
-    cur = np.zeros([1,15],dtype=np.float64)
+    cur = np.zeros([1,15],dtype=np.double)
     cur[0][0] = df.iloc[i-1,-1]
     cur[0][1] = df.iloc[i-2,-1]
     cur[0][2] = df.iloc[i-3,-1]
