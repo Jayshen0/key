@@ -57,7 +57,7 @@ for i in range(3,df.shape[0]):
     
     if df.iloc[i,6] > '2018':
         pre_x[df.iloc[i,2]].append(data_scaled[i-3:i,0])
-        pre_y.append(0)
+        pre_y.append(data_scaled[i,0])
 
 
 train = myDataset(train_x,train_y)
